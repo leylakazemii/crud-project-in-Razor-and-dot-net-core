@@ -31,7 +31,7 @@ namespace Customers.Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomer(int id)
         {
-            var customer = customers.Where(c => c.Id == id).FirstOrDefault();
+            var customer = _context.Customers.Where(c => c.Id == id).FirstOrDefault();
             if (customer == null)
                 return NotFound("not found customer");
             return Ok(customer);
@@ -40,30 +40,33 @@ namespace Customers.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCustomer(Customer customer)
         {
-            customer.Id = customers.Max(m => m.Id + 1);
-            customers.Add(customer);
+            customer.Id = _context.Customers.Max(m => m.Id + 1);
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+            customers = _context.Customers.ToList();
             return Ok(customers);
 
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(Customer customer, int id)
         {
-            var dbcustomer = customers.Where(c => c.Id == id).FirstOrDefault();
+            var dbcustomer = _context.Customers.Where(c => c.Id == id).FirstOrDefault();
             if (dbcustomer == null)
                 return NotFound("not found customer");
-            var index = customers.IndexOf(dbcustomer);
-            customers[index] = customer;
+            _context.Entry(dbcustomer).CurrentValues.SetValues(customer);
+            _context.SaveChanges();
+            customers = _context.Customers.ToList();
             return Ok(customers);
 
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer( int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var dbcustomer = customers.Where(c => c.Id == id).FirstOrDefault();
+            var dbcustomer = _context.Customers.Where(c => c.Id == id).FirstOrDefault();
             if (dbcustomer == null)
                 return NotFound("not found customer");
-            customers.Remove(dbcustomer);
+            _context.Customers.Remove(dbcustomer);
             return Ok(customers);
 
         }

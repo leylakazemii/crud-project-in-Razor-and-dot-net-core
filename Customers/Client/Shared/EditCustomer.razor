@@ -9,7 +9,7 @@ else
 {
     <h3>Edit '@customer.Firstname'</h3>
 }
-<EditForm Model="@customer"  OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@customer" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group">
@@ -37,6 +37,8 @@ else
         <InputText id="email" @bind-Value="customer.Email" class="form-control"></InputText>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
+ 
+
 </EditForm>
 @code {
     //[Parameter]
@@ -46,16 +48,17 @@ else
 
     async void HandleValidSubmit()
     {
-            if (customer.Id == 0)
-            {
+        if (customer.Id == 0)
+        {
 
-                await CustomerService.CreateCustomer(customer);
-            }
-            else
-            {
-                await CustomerService.UpdatedCustomer(customer, customer.Id);
-
-            }
+            await CustomerService.CreateCustomer(customer);
+           
+        }
+        else
+        {
+            await CustomerService.UpdatedCustomer(customer, customer.Id);
+           
+        }
     }
 
 }
