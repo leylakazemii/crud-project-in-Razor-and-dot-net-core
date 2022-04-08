@@ -10,19 +10,18 @@ namespace Customers.Shared
     public class Customer
     {
         public int Id { get; set; } = 0;
-        //[Required]
+        [Required]
+        [MaxLength(50)]
         public string Firstname { get; set; }
-        //[Required]
+        [MaxLength(50)]
         public string Lastname { get; set; }
-        //[Required]
-        //[DataType(DataType.Date)]
-        public string DateOfBirth { get; set; }
-        //[DataType(DataType.PhoneNumber)]
+
+        public DateTime? DateOfBirth { get; set; }
+        
         public string PhoneNumber { get; set; }
-        //[DataType(DataType.EmailAddress)]
-        //[Required]
+        [EmailAddressAttribute]
         public string Email { get; set; }
-        //[DataType(DataType.CreditCard)]
+        [CreditCardAttribute]
         public string BankAccountNumber { get; set; }
 
     }

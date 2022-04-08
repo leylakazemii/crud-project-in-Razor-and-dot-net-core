@@ -20,6 +20,7 @@ else
                 <th>LastName</th>
                 <th>PhoneNumber</th>
                 <th>BankAccountNumber</th>
+                <th>DateOfBirth</th>
                 <th>Email</th>
                 <th></th>
                 <th></th>
@@ -35,6 +36,7 @@ else
                 <td>@customer.PhoneNumber</td>
                 <td>@customer.BankAccountNumber</td>
                 <td>@customer.Email</td>
+                <td>@customer.DateOfBirth</td>
                 <td>
                     <button class="btn btn-primary" @onclick="(()=>ShowCustomer(customer.Id))">show</button>
                 </td>
