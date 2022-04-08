@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Customers.Shared
         public string Lastname { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
-        
+        [MaxLength(12)]
         public string PhoneNumber { get; set; }
         [EmailAddressAttribute]
         public string Email { get; set; }
