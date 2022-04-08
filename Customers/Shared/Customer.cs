@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Customers.Shared
 {
+    [Index(nameof(Email), IsUnique = false)]
     public class Customer
     {
         public int Id { get; set; } = 0;
@@ -21,6 +22,7 @@ namespace Customers.Shared
         [MaxLength(12)]
         public string PhoneNumber { get; set; }
         [EmailAddressAttribute]
+       
         public string Email { get; set; }
         [CreditCardAttribute]
         public string BankAccountNumber { get; set; }

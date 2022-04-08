@@ -12,6 +12,11 @@ namespace Customers.Server.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        private readonly DBContext _context;
+        public CustomerController(DBContext context)
+        {
+            _context = context;
+        }
         static List<Customer> customers = new List<Customer>
         {
             new Customer {Id =1, Firstname = "tohid1",Lastname="fathi1",BankAccountNumber="6037997527428602",PhoneNumber="09148933301"},
@@ -20,6 +25,7 @@ namespace Customers.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCustomers()
         {
+            customers = _context.Customers.ToList();
             return Ok(customers);
         }
         [HttpGet("{id}")]
