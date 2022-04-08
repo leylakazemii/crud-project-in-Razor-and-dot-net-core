@@ -1,0 +1,77 @@
+﻿@page "/customerlist"
+@inject ICustomerService customerService
+@inject HttpClient _http
+@inject NavigationManager navigationManager
+@implements IDisposable
+<h1>Customer List</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (customerService.Customers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>PhoneNumber</th>
+                <th>BankAccountNumber</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Customers.Shared.Customer customer in customerService.Customers)
+            {
+            <tr>
+                <td>@customer.Firstname</td>
+                <td>@customer.Lastname</td>
+                <td>@customer.PhoneNumber</td>
+                <td>@customer.BankAccountNumber</td>
+                <td>@customer.Email</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(()=>ShowCustomer(customer.Id))">show</button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(()=>EditCustomer(customer.Id))">edit</button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" @onclick="(()=>DeleteCustomer(customer.Id))">delete</button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<EditCustomer customer="customerToEdit"></EditCustomer>
+@code {
+    //List<Customers.Shared.Customer> _customers = new List<Customers.Shared.Customer>();
+    public Customers.Shared.Customer customerToEdit = new Customers.Shared.Customer();
+    protected override async Task OnInitializedAsync()
+    {
+        await customerService.GetCustomers();
+        customerService.OnChange += StateHasChanged;
+    }
+    void EditCustomer(int id)
+    {
+        customerToEdit = customerService.Customers.Find(q => q.Id == id);
+    }
+    void DeleteCustomer(int id)
+    {
+        customerService.DeleteCustomer(id);
+    }
+    void ShowCustomer(int id)
+    {
+        navigationManager.NavigateTo($"/customer/{id}");
+    }
+    public void Dispose()
+    {
+        customerService.OnChange -= StateHasChanged;
+    }
+}

@@ -1,0 +1,46 @@
+﻿@page "/customer/{id:int}"
+@inject ICustomerService customerService
+@inject HttpClient _http
+
+<h3>Customer</h3>
+
+@if (_customer == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>PhoneNumber</th>
+                <th>BankAccountNumber</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            <tr>
+                <td>@_customer.Firstname</td>
+                <td>@_customer.Lastname</td>
+                <td>@_customer.PhoneNumber</td>
+                <td>@_customer.BankAccountNumber</td>
+                <td>@_customer.Email</td>
+            </tr>
+           
+        </tbody>
+    </table>
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    Customers.Shared.Customer _customer = new Customers.Shared.Customer();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _customer = await customerService.GetCustomer(Id);
+    }
+
+}

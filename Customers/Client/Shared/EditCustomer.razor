@@ -1,0 +1,53 @@
+﻿@inject IJSRuntime JSRuntime
+@inject ICustomerService CustomerService
+@if (customer.Id == 0)
+{
+    <h3> Create a new Customer</h3>}
+else
+{
+    <h3>Edit '@customer.Firstname'</h3>
+}
+<EditForm Model="customer" OnSubmit="HandleSubmit">
+    <div class="form-group">
+        <label>First Name</label>
+    </div>
+    <InputText @bind-Value="customer.Firstname" class="form-control"></InputText>
+    <div class="form-group">
+        <label>Last Name</label>
+        <InputText @bind-Value="customer.Lastname" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Phone Number</label>
+        <InputText @bind-Value="customer.PhoneNumber" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Bank Account Number</label>
+        <InputText @bind-Value="customer.BankAccountNumber" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <InputText @bind-Value="customer.Email" class="form-control"></InputText>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+@code {
+    //[Parameter]
+    //public Customers.Shared.Customer CustomerToEdit { get; set; }
+    [Parameter]
+
+    public Customers.Shared.Customer customer { get; set; } = new Customers.Shared.Customer();
+    async void HandleSubmit()
+    {
+        JSRuntime.InvokeVoidAsync("console.log", customer);
+        if (customer.Id == 0)
+        {
+
+            await CustomerService.CreateCustomer(customer);
+        }
+        else
+        {
+            await CustomerService.UpdatedCustomer(customer, customer.Id);
+
+        }
+    }
+}
