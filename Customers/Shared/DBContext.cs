@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Customers.Shared
 {
-    public class DBContext:DbContext
+    public class DBContext : DbContext, IDBContext
     {
         public DbSet<Customer> Customers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -19,6 +19,10 @@ namespace Customers.Shared
         {
             modelBuilder.Entity<Customer>().HasKey(c => new { c.Firstname, c.Lastname, c.PhoneNumber });
             modelBuilder.Entity<Customer>().HasIndex(e => e.Email).IsUnique();
+        }
+        public async Task<int> SaveChanges()
+        {
+            return await base.SaveChangesAsync();
         }
     }
 }
